@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>我的英文單字本</title>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFCF6;--ink:#3E3A39;--coral:#F2A497;--yellow:#F6D27A;--sky:#A8D3E6;--green:#B9DAA5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Huninn","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.6;font-size:16px}
+.wrap{max-width:560px;margin:0 auto;padding:calc(66px + env(safe-area-inset-top,0px)) 16px 40px}
+nav{position:fixed;top:0;left:0;right:0;z-index:10;background:var(--bg);border-bottom:3px solid var(--ink);padding-top:env(safe-area-inset-top,0px)}
+nav .in{max-width:560px;margin:0 auto;display:flex;gap:6px;padding:8px 12px;overflow-x:auto}
+button,input,textarea{font:inherit;color:var(--ink)}
+nav button{flex:1 0 auto;border:3px solid var(--ink);border-radius:999px;padding:3px 12px;background:var(--bg);cursor:pointer}
+nav button[aria-selected=true]{background:var(--yellow)}
+:focus-visible{outline:3px dashed var(--ink);outline-offset:2px}
+.hero{background:var(--sky);border:3px solid var(--ink);border-radius:32px;overflow:hidden;margin-bottom:14px}
+.hero svg{display:block;width:100%;height:auto}
+h1{font-size:26px;margin:0 0 4px}
+.view{display:none}.view.on{display:block;animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{0%{transform:translateY(18px) scale(.94);opacity:0}100%{transform:none;opacity:1}}
+.card{border:3px solid var(--ink);border-radius:24px;padding:14px;margin-bottom:12px;background:var(--bg)}
+.btn{border:3px solid var(--ink);border-radius:999px;padding:5px 16px;background:var(--green);cursor:pointer}
+.btn.c{background:var(--coral)}.btn.y{background:var(--yellow)}.btn.s{background:var(--sky)}.btn.w{background:var(--bg)}
+.btn:active{transform:scale(.94)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text],textarea{width:100%;border:3px solid var(--ink);border-radius:18px;padding:8px 12px;background:var(--bg);margin-bottom:8px}
+textarea{min-height:130px;resize:vertical;font-size:15px}
+.stat{font-size:14px;margin:6px 0 10px}
+.chips{display:flex;gap:6px;margin:8px 0}
+.chip{border:3px solid var(--ink);border-radius:999px;padding:0 12px;background:var(--bg);cursor:pointer;font-size:14px}
+.chip[aria-pressed=true]{background:var(--coral)}
+.w{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.wd{font-size:22px;line-height:1.3;word-break:break-word}
+.pos{display:inline-block;border:3px solid var(--ink);border-radius:999px;padding:0 9px;font-size:13px;background:var(--sky);margin-left:6px;vertical-align:middle}
+.zh{font-size:16px;margin-top:2px}
+.acts{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.sm{font-size:13px;padding:1px 10px}
+.empty{text-align:center;padding:10px 0}
+.fc{min-height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;background:var(--yellow);border-radius:32px;margin-bottom:12px}
+.fc .big{font-size:34px;line-height:1.3;word-break:break-word}
+.fc.flip{background:var(--green);animation:pop .4s cubic-bezier(.3,1.5,.5,1)}
+.opt{display:block;width:100%;text-align:left;border:3px solid var(--ink);border-radius:18px;padding:8px 14px;background:var(--bg);margin-bottom:8px;cursor:pointer}
+.opt.ok{background:var(--green)}.opt.no{background:var(--coral)}
+.msg{font-size:14px;margin:4px 0 10px;min-height:22px}
+.fl{animation:bob 4s ease-in-out infinite}.fl2{animation:bob 5s ease-in-out infinite reverse}
+@keyframes bob{50%{transform:translateY(-5px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav aria-label="主選單"><div class="in" role="tablist">
+<button data-v="list">單字</button><button data-v="rev">複習</button><button data-v="quiz">測驗</button><button data-v="add">新增</button><button data-v="bak">備份</button></div></nav>
+<main class="wrap">
+<div class="hero" role="img" aria-label="打開的書與鉛筆插圖">
+<svg viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<circle cx="300" cy="34" r="18" fill="#F6D27A"/>
+<g fill="#FFFCF6"><path d="M24 50h46a12 12 0 000-24 15 15 0 00-28-3 13 13 0 00-18 27z"/></g>
+<g class="fl"><path d="M80 120l100-12v-62L80 58z" fill="#FFFCF6"/><path d="M280 120l-100-12v-62l100 12z" fill="#FFFCF6"/><path d="M96 70l70 8M96 84l70 8M96 98l50 6M264 70l-70 8M264 84l-70 8" fill="none"/><path d="M180 46v62" fill="none"/><path d="M62 124l118-14 118 14" fill="none"/></g>
+<g class="fl2"><path d="M290 90l30-30 10 10-30 30-14 4z" fill="#F2A497"/><path d="M290 90l-4 14 14-4z" fill="#F6D27A"/></g>
+<text x="110" y="52" font-size="16" fill="#3E3A39" stroke="none" font-family="Huninn,sans-serif">A B C</text>
+<path d="M0 136h360v14H0z" fill="#B9DAA5"/>
+</svg></div>
+
+<section class="view" id="v-list"><h1>我的單字本</h1><div class="stat" id="stat"></div>
+<input type="text" id="q" placeholder="搜尋單字或中文" aria-label="搜尋">
+<div class="chips" id="chips"><button class="chip" data-f="all" aria-pressed="true">全部</button><button class="chip" data-f="unk">還不熟</button><button class="chip" data-f="known">已記住</button></div>
+<div id="items"></div></section>
+
+<section class="view" id="v-rev"><h1>閃卡複習</h1>
+<div class="chips"><button class="chip" id="onlyUnk" aria-pressed="false">只複習還不熟的</button></div>
+<div id="revBox"></div></section>
+
+<section class="view" id="v-quiz"><h1>小測驗</h1><div class="stat" id="score"></div><div id="quizBox"></div></section>
+
+<section class="view" id="v-add"><h1>新增單字</h1>
+<div class="card"><input type="text" id="aw" placeholder="單字，例如 resilient" autocapitalize="off" autocorrect="off"><input type="text" id="ap" placeholder="詞性，例如 adj."><input type="text" id="az" placeholder="中文意思"><button class="btn" id="addBtn">新增</button><div class="msg" id="addMsg" role="status"></div></div>
+<div class="card"><b>貼上批次匯入</b><div class="stat">每行一個：單字,詞性,中文。可以直接貼上其他 AI 整理好的結果。</div>
+<textarea id="imp" placeholder="resilient,adj.,有彈性的&#10;ubiquitous,adj.,無所不在的"></textarea><button class="btn s" id="impBtn">匯入</button><div class="msg" id="impMsg" role="status"></div></div></section>
+
+<section class="view" id="v-bak"><h1>備份與還原</h1>
+<div class="card"><div class="stat">單字只存在這支手機的這個瀏覽器裡。清除瀏覽器資料會消失，建議定期複製下面的文字存到備忘錄。要還原時，貼到「新增」的批次匯入即可。</div>
+<textarea id="exp" readonly aria-label="備份內容"></textarea>
+<div class="row"><button class="btn y" id="copyBtn">複製備份</button><button class="btn c" id="clrBtn">清空全部</button></div><div class="msg" id="bakMsg" role="status"></div></div></section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let W=[];try{W=JSON.parse(localStorage.getItem("vocab-v1")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("vocab-v1",JSON.stringify(W))}catch(e){}};
+const speak=w=>{try{const u=new SpeechSynthesisUtterance(w);u.lang="en-US";speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+const has=w=>W.some(x=>x.w.toLowerCase()===w.toLowerCase());
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let view="list",filt="all",armed=null,editing=null;
+function go(v){view=v;$$(".view").forEach(e=>e.classList.toggle("on",e.id=="v-"+v));$$("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v==v));
+ if(v=="list")list();if(v=="rev")nextCard();if(v=="quiz")newQ();if(v=="bak")$("#exp").value=exportText();window.scrollTo(0,0)}
+$$("nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+/* 列表 */
+function list(){
+ const q=$("#q").value.trim().toLowerCase(),n=W.filter(x=>x.k).length;
+ $("#stat").textContent=W.length?`共 ${W.length} 個，已記住 ${n} 個，還不熟 ${W.length-n} 個`:"";
+ const r=W.filter(x=>(filt=="all"||(filt=="known")==x.k)&&(!q||x.w.toLowerCase().includes(q)||x.z.toLowerCase().includes(q)));
+ if(!W.length){$("#items").innerHTML='<div class="card empty">還沒有單字。<br>到「新增」輸入第一個吧！</div>';return}
+ if(!r.length){$("#items").innerHTML='<div class="card empty">沒有符合的單字</div>';return}
+ $("#items").innerHTML=r.slice().reverse().map(x=>x.id==editing?editCard(x):`<div class="card"><div class="w"><div><span class="wd">${esc(x.w)}</span>${x.p?`<span class="pos">${esc(x.p)}</span>`:""}<div class="zh">${esc(x.z)}</div></div><div class="acts"><button class="btn sm w" data-a="say" data-id="${x.id}" aria-label="發音">🔊</button><button class="btn sm ${x.k?"":"c"}" data-a="tog" data-id="${x.id}">${x.k?"已記住":"還不熟"}</button><button class="btn sm y" data-a="edit" data-id="${x.id}">編輯</button><button class="btn sm w" data-a="del" data-id="${x.id}">${armed==x.id?"再按一次刪除":"刪除"}</button></div></div></div>`).join("")}
+const editCard=x=>`<div class="card" style="background:var(--yellow)"><input type="text" id="ew" value="${esc(x.w)}" aria-label="單字" autocapitalize="off" autocorrect="off"><input type="text" id="ep" value="${esc(x.p)}" aria-label="詞性" placeholder="詞性"><input type="text" id="ez" value="${esc(x.z)}" aria-label="中文意思"><div class="row"><button class="btn sm" data-a="save" data-id="${x.id}">儲存</button><button class="btn sm w" data-a="cancel" data-id="${x.id}">取消</button></div><div class="msg" id="editMsg" role="status"></div></div>`;
+$("#items").onclick=e=>{const b=e.target.closest("button");if(!b)return;const x=W.find(i=>i.id==b.dataset.id);if(!x)return;
+ if(b.dataset.a=="say")return speak(x.w);
+ if(b.dataset.a=="edit"){editing=x.id;setTimeout(()=>{const i=$("#ew");if(i)i.focus()},0)}
+ if(b.dataset.a=="cancel")editing=null;
+ if(b.dataset.a=="save"){const w=$("#ew").value.trim(),p=$("#ep").value.trim(),z=$("#ez").value.trim(),m=$("#editMsg");
+  if(!w||!z){m.textContent="請至少填單字和中文意思";return}
+  if(W.some(i=>i!=x&&i.w.toLowerCase()==w.toLowerCase())){m.textContent=`「${w}」已經在單字本裡了`;return}
+  Object.assign(x,{w,p,z});save();editing=null}
+ if(b.dataset.a=="tog"){x.k=!x.k;save()}
+ if(b.dataset.a=="del"){if(armed==x.id){W=W.filter(i=>i!=x);save();armed=null}else{armed=x.id;list();setTimeout(()=>{if(armed==x.id){armed=null;if(view=="list")list()}},3000);return}}
+ list()};
+$("#q").oninput=list;
+$$("#chips .chip").forEach(c=>c.onclick=()=>{filt=c.dataset.f;$$("#chips .chip").forEach(o=>o.setAttribute("aria-pressed",o==c));list()});
+/* 新增 */
+$("#addBtn").onclick=()=>{const w=$("#aw").value.trim(),p=$("#ap").value.trim(),z=$("#az").value.trim(),m=$("#addMsg");
+ if(!w||!z){m.textContent="請至少填單字和中文意思";return}
+ if(has(w)){m.textContent=`「${w}」已經在單字本裡了`;return}
+ W.push({id:uid(),w,p,z,k:false});save();m.textContent=`已新增「${w}」，目前共 ${W.length} 個`;$("#aw").value=$("#ap").value=$("#az").value="";$("#aw").focus()};
+$("#impBtn").onclick=()=>{let add=0,dup=0,bad=0;
+ $("#imp").value.split(/\r?\n/).forEach(l=>{l=l.trim();if(!l||l.startsWith("```")||l.startsWith("---"))return;
+  const p=l.split(/[,\t]/).map(s=>s.trim());if(p[0]=="單字"||p[0].toLowerCase()=="word")return;
+  let k=false;if(p.length>3&&p[p.length-1]=="#熟"){k=true;p.pop()}
+  if(p.length<3||!p[0]||!p.slice(2).join(",").trim()){bad++;return}
+  if(has(p[0])){dup++;return}
+  W.push({id:uid(),w:p[0],p:p[1],z:p.slice(2).join(",").trim(),k});add++});
+ save();$("#impMsg").textContent=`新增 ${add} 個，略過重複 ${dup} 個，格式不符 ${bad} 行`;if(add)$("#imp").value=""};
+/* 備份 */
+const exportText=()=>W.map(x=>[x.w,x.p,x.z].concat(x.k?["#熟"]:[]).join(",")).join("\n");
+$("#copyBtn").onclick=async()=>{const t=$("#exp"),m=$("#bakMsg");t.value=exportText();
+ if(!W.length){m.textContent="目前沒有單字可備份";return}
+ try{await navigator.clipboard.writeText(t.value);m.textContent="已複製，貼到備忘錄保存吧"}catch(e){t.select();try{document.execCommand("copy");m.textContent="已複製"}catch(_){m.textContent="請長按文字框，手動全選複製"}}};
+$("#clrBtn").onclick=function(){if(armed=="clr"){W=[];save();armed=null;this.textContent="清空全部";$("#exp").value="";$("#bakMsg").textContent="已清空"}else{armed="clr";this.textContent="再按一次確認清空";setTimeout(()=>{armed=null;this.textContent="清空全部"},3000)}};
+/* 複習 */
+let cur=null,flip=false;
+$("#onlyUnk").onclick=function(){this.setAttribute("aria-pressed",this.getAttribute("aria-pressed")!="true");nextCard()};
+function nextCard(){const only=$("#onlyUnk").getAttribute("aria-pressed")=="true",pool=W.filter(x=>!only||!x.k),b=$("#revBox");
+ if(!pool.length){b.innerHTML=`<div class="card empty">${W.length?"太棒了，沒有「還不熟」的單字！":"還沒有單字可以複習"}</div>`;cur=null;return}
+ let c;do{c=pool[Math.floor(Math.random()*pool.length)]}while(pool.length>1&&cur&&c.id==cur.id);cur=c;flip=false;card()}
+function card(){const x=cur;$("#revBox").innerHTML=`<div class="card fc${flip?" flip":""}" id="fc" tabindex="0" role="button" aria-label="點一下翻面">${flip?`<div class="big">${esc(x.z)}</div><div>${esc(x.w)} ${esc(x.p)}</div>`:`<div class="big">${esc(x.w)}</div><div>點一下看答案</div>`}</div><div class="row"><button class="btn w" id="sayB">🔊</button><button class="btn c" id="noB">還不熟</button><button class="btn" id="okB">記住了</button></div>`;
+ const f=()=>{flip=!flip;card()};$("#fc").onclick=f;$("#fc").onkeydown=e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();f()}};
+ $("#sayB").onclick=()=>speak(x.w);$("#noB").onclick=()=>{x.k=false;save();nextCard()};$("#okB").onclick=()=>{x.k=true;save();nextCard()}}
+/* 測驗 */
+let sc=0,tot=0;
+function newQ(){const b=$("#quizBox");$("#score").textContent=tot?`答對 ${sc} / ${tot}`:"";
+ if(W.length<4){b.innerHTML='<div class="card empty">至少要有 4 個單字才能測驗。<br>目前有 '+W.length+" 個。</div>";return}
+ const q=W[Math.floor(Math.random()*W.length)],zs=[...new Set(W.filter(x=>x.z!=q.z).map(x=>x.z))].sort(()=>Math.random()-.5).slice(0,3);
+ if(zs.length<3){b.innerHTML='<div class="card empty">中文意思需要有足夠的不同選項</div>';return}
+ const o=[q.z,...zs].sort(()=>Math.random()-.5);
+ b.innerHTML=`<div class="card fc" style="cursor:default;min-height:130px"><div class="big">${esc(q.w)}</div><div>${esc(q.p)}</div></div>`+o.map(z=>`<button class="opt">${esc(z)}</button>`).join("")+'<div id="nx"></div>';
+ let done=false;$$("#quizBox .opt").forEach(btn=>btn.onclick=()=>{if(done)return;done=true;tot++;const ok=btn.textContent==q.z;
+  btn.classList.add(ok?"ok":"no");if(ok)sc++;else{q.k=false;save();$$("#quizBox .opt").forEach(x=>{if(x.textContent==q.z)x.classList.add("ok")})}
+  $("#score").textContent=`答對 ${sc} / ${tot}`;$("#nx").innerHTML='<button class="btn y" id="nxB">下一題</button>';$("#nxB").onclick=newQ})}
+go("list");
+</script>
+</body>
+</html>
